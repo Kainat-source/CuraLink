@@ -404,7 +404,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Button,  
+  Button,
   Box,
   Divider,
   TextField,
@@ -430,7 +430,6 @@ const Center = () => {
 
   const [newStaff, setNewStaff] = useState({
     name: "",
-    nutrition: "",
     medication: "",
     urination: "",
     room: "",
@@ -460,7 +459,9 @@ const Center = () => {
 
   // 📦 Fetch all staff
   useEffect(() => {
-    fetch("https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff")
+    fetch(
+      "https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff"
+    )
       .then((res) => res.json())
       .then((data) => setStaffList(data.staff || data))
       .catch((err) => console.error("Fetch staff error:", err));
@@ -504,15 +505,13 @@ const Center = () => {
     const prompt = `
 Staff list:
 ${staffList
-  .map(
-    (s) => `${s.name} has fields: nutrition, medication, urination`
-  )
+  .map((s) => `${s.name} has fields: medication, urination`)
   .join("\n")}
 
 User entered this note: "${note}"
 You must identify:
 1. Name of the staff
-2. Correct category (nutrition, medication, or urination)
+2. Correct category (medication or urination)
 Return this format only:
 Name: [staff name]
 Category: [category name]
@@ -525,7 +524,8 @@ Category: [category name]
       const nameMatch = res.match(/Name:\s*(.+)/i);
       const categoryMatch = res.match(/Category:\s*(.+)/i);
 
-      if (!nameMatch || !categoryMatch) return alert("AI could not detect target staff.");
+      if (!nameMatch || !categoryMatch)
+        return alert("AI could not detect target staff.");
 
       const staffName = nameMatch[1].trim();
       const category = categoryMatch[1].trim().toLowerCase();
@@ -536,11 +536,14 @@ Category: [category name]
       if (!staff) return alert(`No staff found with name ${staffName}`);
 
       // Update backend field
-      const updateRes = await fetch(`https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff/${staff._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ [category]: note }),
-      });
+      const updateRes = await fetch(
+        `https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff/${staff._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [category]: note }),
+        }
+      );
 
       if (!updateRes.ok) throw new Error("Failed to update staff");
 
@@ -570,11 +573,14 @@ Category: [category name]
 
     setAdding(true);
     try {
-      const res = await fetch("https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newStaff),
-      });
+      const res = await fetch(
+        "https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newStaff),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to add staff");
       const data = await res.json();
@@ -583,7 +589,6 @@ Category: [category name]
       setOpenModal(false);
       setNewStaff({
         name: "",
-        nutrition: "",
         medication: "",
         urination: "",
         room: "",
@@ -607,11 +612,14 @@ Category: [category name]
   const handleUpdateStaff = async () => {
     setUpdating(true);
     try {
-      const res = await fetch(`https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff/${selectedStaff._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newStaff),
-      });
+      const res = await fetch(
+        `https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/staff/${selectedStaff._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newStaff),
+        }
+      );
 
       const data = await res.json();
       setStaffList((prev) =>
@@ -630,15 +638,24 @@ Category: [category name]
     <div style={{ padding: "20px", background: "#fefefe", minHeight: "100vh" }}>
       {/* Main Buttons */}
       <Box display="flex" justifyContent="center" gap={4} mb={3}>
-        <Button onClick={handleVoiceNote} sx={buttonStyle(activeButton === "voice")}>
+        <Button
+          onClick={handleVoiceNote}
+          sx={buttonStyle(activeButton === "voice")}
+        >
           <MicIcon sx={{ fontSize: 60 }} />
           Voice Note
         </Button>
-        <Button onClick={() => setActiveButton("text")} sx={buttonStyle(activeButton === "text")}>
+        <Button
+          onClick={() => setActiveButton("text")}
+          sx={buttonStyle(activeButton === "text")}
+        >
           <ArticleIcon sx={{ fontSize: 60 }} />
           Text Note
         </Button>
-        <Button onClick={handleAddStaff} sx={buttonStyle(activeButton === "add")}>
+        <Button
+          onClick={handleAddStaff}
+          sx={buttonStyle(activeButton === "add")}
+        >
           <PersonAddIcon sx={{ fontSize: 60 }} />
           Add Staff
         </Button>
@@ -648,7 +665,15 @@ Category: [category name]
 
       {/* ✍️ Text Note Input */}
       {activeButton === "text" && (
-        <Box mt={3} p={3} sx={{ border: "1px solid #ddd", borderRadius: "10px", background: "#fafafa" }}>
+        <Box
+          mt={3}
+          p={3}
+          sx={{
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+            background: "#fafafa",
+          }}
+        >
           <Typography>Enter a note for staff:</Typography>
           <TextField
             fullWidth
@@ -665,7 +690,11 @@ Category: [category name]
             onClick={() => handleSendToAI()}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : "Send"}
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Send"
+            )}
           </Button>
         </Box>
       )}
@@ -681,11 +710,30 @@ Category: [category name]
                     {capitalizeFirst(staff.name)}
                   </Typography>
                   <List dense>
-                    <ListItem><ListItemText primary="Nutrition" secondary={staff.nutrition || "empty"} /></ListItem>
-                    <ListItem><ListItemText primary="Medication" secondary={staff.medication || "empty"} /></ListItem>
-                    <ListItem><ListItemText primary="Urination" secondary={staff.urination || "empty"} /></ListItem>
-                    <ListItem><ListItemText primary="Room" secondary={staff.room || "N/A"} /></ListItem>
-                    <ListItem><ListItemText primary="Care Level" secondary={staff.careLevel || "N/A"} /></ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Medication"
+                        secondary={staff.medication || "empty"}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Urination"
+                        secondary={staff.urination || "empty"}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Room"
+                        secondary={staff.room || "N/A"}
+                      />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText
+                        primary="Care Level"
+                        secondary={staff.careLevel || "N/A"}
+                      />
+                    </ListItem>
                   </List>
                   <Button
                     variant="contained"
@@ -705,7 +753,13 @@ Category: [category name]
       </Grid>
 
       {/* Add/Edit Modal */}
-      <Modal open={openModal || editModal} onClose={() => { setOpenModal(false); setEditModal(false); }}>
+      <Modal
+        open={openModal || editModal}
+        onClose={() => {
+          setOpenModal(false);
+          setEditModal(false);
+        }}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -719,20 +773,29 @@ Category: [category name]
             borderRadius: 3,
           }}
         >
-          <Typography variant="h6" textAlign="center" mb={2} color="success.main">
+          <Typography
+            variant="h6"
+            textAlign="center"
+            mb={2}
+            color="success.main"
+          >
             {openModal ? "Add New Staff" : "Edit Staff"}
           </Typography>
-          {["name", "nutrition", "medication", "urination", "room", "careLevel"].map((field) => (
-            <TextField
-              key={field}
-              label={capitalizeFirst(field)}
-              fullWidth
-              size="small"
-              sx={{ mb: 1 }}
-              value={newStaff[field]}
-              onChange={(e) => setNewStaff({ ...newStaff, [field]: e.target.value })}
-            />
-          ))}
+          {["name", "medication", "urination", "room", "careLevel"].map(
+            (field) => (
+              <TextField
+                key={field}
+                label={capitalizeFirst(field)}
+                fullWidth
+                size="small"
+                sx={{ mb: 1 }}
+                value={newStaff[field]}
+                onChange={(e) =>
+                  setNewStaff({ ...newStaff, [field]: e.target.value })
+                }
+              />
+            )
+          )}
           <Button
             variant="contained"
             color="success"
@@ -740,9 +803,13 @@ Category: [category name]
             onClick={openModal ? handleSaveStaff : handleUpdateStaff}
             disabled={adding || updating}
           >
-            {(adding || updating)
-              ? <CircularProgress size={22} color="inherit" />
-              : openModal ? "Save" : "Update"}
+            {adding || updating ? (
+              <CircularProgress size={22} color="inherit" />
+            ) : openModal ? (
+              "Save"
+            ) : (
+              "Update"
+            )}
           </Button>
         </Box>
       </Modal>
@@ -750,4 +817,4 @@ Category: [category name]
   );
 };
 
-export default Center; 
+export default Center;
