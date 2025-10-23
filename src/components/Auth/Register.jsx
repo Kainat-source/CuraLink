@@ -151,12 +151,32 @@
 
 
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Paper, Autocomplete, CircularProgress } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Autocomplete,
+  CircularProgress,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
-const roles = ["Arzt", "Pflegekraft", "Administrator", "Andere"];
+// ✅ German labels, English values (sent to backend)
+const roles = [
+  { label: "Pflegekraft", value: "nurse" },
+  { label: "Arzt", value: "doctor" },
+  { label: "Administrator", value: "admin" },
+  { label: "Andere", value: "others" },
+];
+
 const Register = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -168,15 +188,18 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        "https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
 
       const data = await res.json();
       if (res.ok) {
-        alert("✅  Erfolgreich registriert!");
+        alert("✅ Erfolgreich registriert!");
         navigate("/login", { replace: true });
       } else {
         alert("❌ " + data.error);
@@ -199,8 +222,19 @@ const Register = () => {
         background: "linear-gradient(135deg, #C8E6C9, #A5D6A7)",
       }}
     >
-      <Paper sx={{ p: 4, width: 400, borderRadius: 4, boxShadow: "0 6px 20px rgba(0,0,0,0.2)" }}>
-        <Typography variant="h5" align="center" sx={{ mb: 3, color: "#1B5E20", fontWeight: 600 }}>
+      <Paper
+        sx={{
+          p: 4,
+          width: 400,
+          borderRadius: 4,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
+        }}
+      >
+        <Typography
+          variant="h5"
+          align="center"
+          sx={{ mb: 3, color: "#1B5E20", fontWeight: 600 }}
+        >
           🩺 Konto erstellen
         </Typography>
 
@@ -230,11 +264,14 @@ const Register = () => {
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
+        {/* ✅ Role dropdown with German labels and English values */}
         <Autocomplete
           options={roles}
-          getOptionLabel={(option) => option}
-          onChange={(e, value) => setForm({ ...form, role: value })}
-          renderInput={(params) => <TextField {...params} label="Rolle auswählen" sx={{ mb: 2 }} />}
+          getOptionLabel={(option) => option.label}
+          onChange={(e, value) => setForm({ ...form, role: value?.value || "" })}
+          renderInput={(params) => (
+            <TextField {...params} label="Rolle auswählen" sx={{ mb: 2 }} />
+          )}
         />
 
         <Button
@@ -250,13 +287,20 @@ const Register = () => {
           onClick={handleRegister}
           disabled={loading}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "Registrieren"}
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "Registrieren"
+          )}
         </Button>
 
         <Typography align="center" sx={{ mt: 2 }}>
-         Bereits ein Konto?{" "}
-          <Link to="/login" style={{ color: "#1B5E20", textDecoration: "none" }}>
-            Ammelden
+          Bereits ein Konto?{" "}
+          <Link
+            to="/login"
+            style={{ color: "#1B5E20", textDecoration: "none" }}
+          >
+            Anmelden
           </Link>
         </Typography>
       </Paper>
@@ -265,4 +309,3 @@ const Register = () => {
 };
 
 export default Register;
-
