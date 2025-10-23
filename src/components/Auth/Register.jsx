@@ -1,14 +1,30 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography, Paper, Autocomplete, CircularProgress } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Autocomplete,
+  CircularProgress,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 const roles = ["Arzt", "Pflegekraft", "Administrator", "Andere"];
+
 const Register = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "" });
+  // Default role to first option to avoid null
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: roles[0],
+  });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async () => {
+    // ✅ Frontend validation
     if (!form.name || !form.email || !form.password || !form.role) {
       alert("Bitte alle Felder ausfüllen 😭");
       return;
@@ -16,18 +32,23 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        "https://cura-backend-augp-m4x644103-kainat-s-projects-f1e94478.vercel.app/api/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
 
       const data = await res.json();
+
       if (res.ok) {
-        alert("✅  Erfolgreich registriert!");
+        alert("✅ Erfolgreich registriert!");
         navigate("/login", { replace: true });
       } else {
-        alert("❌ " + data.error);
+        // Show backend error message
+        alert("❌ " + (data.error || "Server error 😭"));
       }
     } catch (err) {
       console.error(err);
@@ -47,8 +68,19 @@ const Register = () => {
         background: "linear-gradient(135deg, #C8E6C9, #A5D6A7)",
       }}
     >
-      <Paper sx={{ p: 4, width: 400, borderRadius: 4, boxShadow: "0 6px 20px rgba(0,0,0,0.2)" }}>
-        <Typography variant="h5" align="center" sx={{ mb: 3, color: "#1B5E20", fontWeight: 600 }}>
+      <Paper
+        sx={{
+          p: 4,
+          width: 400,
+          borderRadius: 4,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
+        }}
+      >
+        <Typography
+          variant="h5"
+          align="center"
+          sx={{ mb: 3, color: "#1B5E20", fontWeight: 600 }}
+        >
           🩺 Konto erstellen
         </Typography>
 
@@ -81,8 +113,11 @@ const Register = () => {
         <Autocomplete
           options={roles}
           getOptionLabel={(option) => option}
-          onChange={(e, value) => setForm({ ...form, role: value })}
-          renderInput={(params) => <TextField {...params} label="Rolle auswählen" sx={{ mb: 2 }} />}
+          value={form.role}
+          onChange={(e, value) => setForm({ ...form, role: value || roles[0] })}
+          renderInput={(params) => (
+            <TextField {...params} label="Rolle auswählen" sx={{ mb: 2 }} />
+          )}
         />
 
         <Button
@@ -102,9 +137,9 @@ const Register = () => {
         </Button>
 
         <Typography align="center" sx={{ mt: 2 }}>
-         Bereits ein Konto?{" "}
+          Bereits ein Konto?{" "}
           <Link to="/login" style={{ color: "#1B5E20", textDecoration: "none" }}>
-            Ammelden
+            Anmelden
           </Link>
         </Typography>
       </Paper>
