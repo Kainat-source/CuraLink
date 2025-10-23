@@ -700,7 +700,7 @@ Category: [category name]
       )}
 
       {/* Staff Cards */}
-      <Grid container spacing={2} mt={3}>
+      <Grid container spacing={2} mt={3} mb={4}>
         {staffList.length > 0 ? (
           staffList.map((staff) => (
             <Grid item xs={12} sm={6} md={4} key={staff._id}>
