@@ -133,8 +133,8 @@ const GeneralCategory = ({ resident = {}, setResidents }) => {
         return (
           <Box
             sx={{
-              width: 22,
-              height: 22,
+              width: 14,
+              height: 14,
               borderRadius: "50%",
               backgroundColor: "#2E7D32",
               display: "flex",
@@ -149,8 +149,8 @@ const GeneralCategory = ({ resident = {}, setResidents }) => {
         return (
           <Box
             sx={{
-              width: 22,
-              height: 22,
+              width: 14,
+              height: 14,
               borderRadius: "50%",
               backgroundColor: "#2E7D32",
               display: "flex",
@@ -165,8 +165,8 @@ const GeneralCategory = ({ resident = {}, setResidents }) => {
         return (
           <Box
             sx={{
-              width: 22,
-              height: 22,
+              width: 14,
+              height: 14,
               borderRadius: "50%",
               backgroundColor: "#FFB300",
             }}

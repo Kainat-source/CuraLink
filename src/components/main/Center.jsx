@@ -638,7 +638,7 @@ Category: [category name]
     <div style={{ padding: "20px", background: "#fefefe", minHeight: "100vh" }}>
       {/* Main Buttons */}
       <Box display="flex" justifyContent="center" gap={4} mb={3}>
-        <Button
+        {/* <Button
           onClick={handleVoiceNote}
           sx={buttonStyle(activeButton === "voice")}
         >
@@ -651,17 +651,17 @@ Category: [category name]
         >
           <ArticleIcon sx={{ fontSize: 60 }} />
           Text Note
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           onClick={handleAddStaff}
           sx={buttonStyle(activeButton === "add")}
         >
           <PersonAddIcon sx={{ fontSize: 60 }} />
           Add Staff
-        </Button>
+        </Button> */}
       </Box>
 
-      <Divider />
+      {/* <Divider /> */}
 
       {/* ✍️ Text Note Input */}
       {activeButton === "text" && (
@@ -700,7 +700,7 @@ Category: [category name]
       )}
 
       {/* Staff Cards */}
-      <Grid container spacing={2} mt={3} mb={4}>
+      {/* <Grid container spacing={2} mt={3} mb={4}>
         {staffList.length > 0 ? (
           staffList.map((staff) => (
             <Grid item xs={12} sm={6} md={4} key={staff._id}>
@@ -750,7 +750,7 @@ Category: [category name]
         ) : (
           <Typography sx={{ mt: 4, mx: "auto" }}>No staff found.</Typography>
         )}
-      </Grid>
+      </Grid> */}
 
       {/* Add/Edit Modal */}
       <Modal

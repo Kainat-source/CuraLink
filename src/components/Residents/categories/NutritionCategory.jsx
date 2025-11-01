@@ -167,7 +167,7 @@ const NutritionCategory = ({ resident, setResidents }) => {
                     border: `2px solid ${style.border}`,
                     borderRadius: "10px",
                     overflow: "hidden",
-                    height: 140,
+                    height: 150,
                     boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                   }}
                 >
