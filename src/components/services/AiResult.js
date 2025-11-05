@@ -29,3 +29,5 @@ export const askAI = async (userMessage) => {
     throw error;
   }
 };  
+
+
